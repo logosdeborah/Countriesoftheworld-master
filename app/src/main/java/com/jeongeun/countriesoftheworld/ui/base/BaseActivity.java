@@ -18,7 +18,6 @@ public abstract class BaseActivity<P extends Presenter, V extends MvpView> exten
 
     private P presenter;
     private static final int LOADER_ID = 99;
-    private final String TAG = "Countries";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
