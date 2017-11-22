@@ -12,4 +12,8 @@ public class ViewUtil {
     public static String getFormattedNumber(int number){
         return NumberFormat.getNumberInstance(Locale.US).format(number);
     }
+
+    public static String replaceIfEmpty(String value) {
+        return value.isEmpty() ? "-" : value;
+    }
 }

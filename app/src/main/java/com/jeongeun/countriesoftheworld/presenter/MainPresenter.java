@@ -1,7 +1,7 @@
 package com.jeongeun.countriesoftheworld.presenter;
 
-import com.jeongeun.countriesoftheworld.data.CountriesService;
-import com.jeongeun.countriesoftheworld.data.model.Country;
+import com.jeongeun.countriesoftheworld.data.CountryRepository;
+import com.jeongeun.countriesoftheworld.data.local.CountryEntity;
 import com.jeongeun.countriesoftheworld.presenter.base.BasePresenter;
 import com.jeongeun.countriesoftheworld.ui.MainMvpView;
 
@@ -11,15 +11,17 @@ import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
+import timber.log.Timber;
 
 public class MainPresenter extends BasePresenter<MainMvpView> {
-    String CUSTOM_FIELDS = "name;capital;region;population;flag;languages";
-
-    private CountriesService mCountriesService;
+    private CountryRepository mRepository;
     private Disposable mDisposable;
 
     public MainPresenter() {
-        mCountriesService = CountriesService.Creator.CreateCountriesService();
+    }
+
+    public void setRepository(CountryRepository repository) {
+        this.mRepository = repository;
     }
 
     @Override
@@ -37,17 +39,17 @@ public class MainPresenter extends BasePresenter<MainMvpView> {
 
     public void loadCountries() {
 
-        mCountriesService.getCountries(CUSTOM_FIELDS)
-                .subscribeOn(Schedulers.newThread())
+        mRepository.getCountries()
+                .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<List<Country>>() {
+                .subscribe(new Observer<List<CountryEntity>>() {
                     @Override
                     public void onSubscribe(Disposable d) {
                         mDisposable = d;
                     }
 
                     @Override
-                    public void onNext(List<Country> countries) {
+                    public void onNext(List<CountryEntity> countries) {
                         getMvpView().setCountries(countries);
                     }
 
@@ -62,8 +64,31 @@ public class MainPresenter extends BasePresenter<MainMvpView> {
                 });
     }
 
-    public void loadFlags() {
+    public void searchCountries(String name) {
+        mRepository.searchCountriesByName(name)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<List<CountryEntity>>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        mDisposable = d;
+                    }
 
+                    @Override
+                    public void onNext(List<CountryEntity> countries) {
+                        getMvpView().setCountries(countries);
+                        Timber.d("loaded %d countries", countries.size());
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        getMvpView().showLoadingError(e);
+                    }
+
+                    @Override
+                    public void onComplete() {
+                    }
+                });
     }
 
 

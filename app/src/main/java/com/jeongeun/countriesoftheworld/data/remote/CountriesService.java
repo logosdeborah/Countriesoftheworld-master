@@ -1,8 +1,8 @@
-package com.jeongeun.countriesoftheworld.data;
+package com.jeongeun.countriesoftheworld.data.remote;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.jeongeun.countriesoftheworld.data.model.Country;
+import com.jeongeun.countriesoftheworld.data.local.CountryEntity;
 import com.jeongeun.countriesoftheworld.util.MyGsonTypeAdapterFactory;
 
 import java.util.List;
@@ -24,7 +24,7 @@ public interface CountriesService {
     String FIELDS = "fields";
 
     @GET("all")
-    Observable<List<Country>> getCountries(@Query(FIELDS) String fields);
+    Observable<List<CountryEntity>> getCountries(@Query(FIELDS) String fields);
 
     class Creator {
 

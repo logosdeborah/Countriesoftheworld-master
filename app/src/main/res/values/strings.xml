@@ -3,6 +3,6 @@
     <string name="action_settings">Settings</string>
     <string name="capital">Capital</string>
     <string name="region">Region</string>
-    <string name="language">Language</string>
+    <string name="timezone">Time zone</string>
     <string name="population">Population</string>
 </resources>

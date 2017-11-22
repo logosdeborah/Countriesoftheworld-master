@@ -1,5 +1,6 @@
 package com.jeongeun.countriesoftheworld.data.model;
 
+import android.arch.persistence.room.ColumnInfo;
 import android.os.Parcelable;
 
 import com.google.auto.value.AutoValue;
@@ -21,6 +22,7 @@ public abstract class Country implements Parcelable {
     public abstract Integer population();
     public abstract String flag();
     public abstract List<Language> languages();
+    public abstract List<String> timezones();
 
     public static TypeAdapter<Country> typeAdapter (Gson gson) {
         return new AutoValue_Country.GsonTypeAdapter(gson);
@@ -38,6 +40,7 @@ public abstract class Country implements Parcelable {
         public abstract Builder setPopulation(Integer population);
         public abstract Builder setFlag(String flag);
         public abstract Builder setLanguages(List<Language> languages);
+        public abstract Builder setTimezones(List<String> timezones);
         public abstract Country build();
     }
 }

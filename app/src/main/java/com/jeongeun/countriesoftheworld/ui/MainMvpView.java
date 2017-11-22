@@ -1,6 +1,6 @@
 package com.jeongeun.countriesoftheworld.ui;
 
-import com.jeongeun.countriesoftheworld.data.model.Country;
+import com.jeongeun.countriesoftheworld.data.local.CountryEntity;
 import com.jeongeun.countriesoftheworld.ui.base.MvpView;
 
 import java.util.List;
@@ -11,6 +11,6 @@ import java.util.List;
 
 public interface MainMvpView extends MvpView {
 
-    void setCountries(List<Country> countries);
+    void setCountries(List<CountryEntity> countries);
     void showLoadingError(Throwable e);
 }

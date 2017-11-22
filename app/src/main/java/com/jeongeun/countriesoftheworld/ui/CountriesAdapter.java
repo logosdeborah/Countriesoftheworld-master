@@ -6,8 +6,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.jeongeun.countriesoftheworld.R;
-import com.jeongeun.countriesoftheworld.data.model.Country;
+import com.jeongeun.countriesoftheworld.data.local.CountryEntity;
 import com.jeongeun.countriesoftheworld.ui.base.ItemClickListener;
+import com.jeongeun.countriesoftheworld.util.ViewUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +19,7 @@ import java.util.List;
 
 public class CountriesAdapter extends RecyclerView.Adapter<CountriesViewHolder> {
 
-    private List<Country> mCountries;
+    private List<CountryEntity> mCountries;
     private ItemClickListener mListener;
 
     public CountriesAdapter(ItemClickListener listener) {
@@ -26,7 +27,7 @@ public class CountriesAdapter extends RecyclerView.Adapter<CountriesViewHolder> 
         mListener = listener;
     }
 
-    public void setCountries(List<Country> list) {
+    public void setCountries(List<CountryEntity> list) {
         mCountries = list;
     }
 
@@ -39,9 +40,9 @@ public class CountriesAdapter extends RecyclerView.Adapter<CountriesViewHolder> 
 
     @Override
     public void onBindViewHolder(CountriesViewHolder holder, int position) {
-        Country country = mCountries.get(position);
+        CountryEntity country = mCountries.get(position);
         holder.nameTextView.setText(country.name());
-        holder.capitalTextView.setText(country.capital());
+        holder.capitalTextView.setText(ViewUtil.replaceIfEmpty(country.capital()));
     }
 
     @Override
@@ -49,7 +50,7 @@ public class CountriesAdapter extends RecyclerView.Adapter<CountriesViewHolder> 
         return mCountries.size();
     }
 
-    public Country getCountry(int position) {
+    public CountryEntity getCountry(int position) {
         return mCountries.get(position);
     }
 

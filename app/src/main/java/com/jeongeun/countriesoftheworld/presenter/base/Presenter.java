@@ -13,4 +13,5 @@ public interface Presenter<T extends MvpView> {
     void detachView();
 
     void onDestroyed();
+
 }

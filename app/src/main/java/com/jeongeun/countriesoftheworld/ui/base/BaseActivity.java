@@ -18,6 +18,7 @@ public abstract class BaseActivity<P extends Presenter, V extends MvpView> exten
 
     private P presenter;
     private static final int LOADER_ID = 99;
+    private final String TAG = "Countries";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -29,6 +30,7 @@ public abstract class BaseActivity<P extends Presenter, V extends MvpView> exten
         } else {
             presenter = ((PresenterLoader<P>)loader).getPresenter();
         }
+
     }
 
     private void initLoader() {
@@ -65,7 +67,6 @@ public abstract class BaseActivity<P extends Presenter, V extends MvpView> exten
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        presenter.detachView();
         presenter = null;
     }
 

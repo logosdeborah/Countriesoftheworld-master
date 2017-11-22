@@ -5,6 +5,7 @@ import android.support.v4.content.Loader;
 
 /**
  * Created by JeongEun on 2017-11-16.
+ * A base class for PresenterLoader.
  */
 
 public class PresenterLoader<P extends Presenter> extends Loader<P> {
@@ -37,6 +38,9 @@ public class PresenterLoader<P extends Presenter> extends Loader<P> {
         deliverResult(presenter);
     }
 
+    /**
+     * This is called whenever the loader is destroyed and need reset.
+     */
     @Override
     protected void onReset() {
         super.onReset();
