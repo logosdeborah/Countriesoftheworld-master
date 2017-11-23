@@ -13,7 +13,7 @@ import android.widget.ProgressBar;
 
 import com.jeongeun.countriesoftheworld.Injection;
 import com.jeongeun.countriesoftheworld.R;
-import com.jeongeun.countriesoftheworld.data.local.CountryEntity;
+import com.jeongeun.countriesoftheworld.data.model.Country;
 import com.jeongeun.countriesoftheworld.presenter.MainPresenter;
 import com.jeongeun.countriesoftheworld.presenter.MainPresenterFactory;
 import com.jeongeun.countriesoftheworld.presenter.base.PresenterFactory;
@@ -37,6 +37,7 @@ public class MainActivity extends BaseActivity<MainPresenter, MainMvpView>
     @BindView(R.id.app_bar) AppBarLayout mAppBarLayout;
 
     private CountriesAdapter mCountriesAdapter;
+    private MenuItem mSearchMenu;
     private CountriesBottomSheetDialog mBottomSheetDialog;
 
     @Override
@@ -67,39 +68,11 @@ public class MainActivity extends BaseActivity<MainPresenter, MainMvpView>
         mBottomSheetDialog = null;
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        SearchView searchView = (SearchView) menu.findItem(R.id.search).getActionView();
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String s) {
-                return true;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String s) {
-                getPresenter().searchCountries(s);
-                return true;
-            }
-        });
-        return true;
-    }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        if (id == R.id.search) {
-            /* When a user clicks search button, tool bar will be collapsed. */
-            mAppBarLayout.setExpanded(false);
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public void setCountries(List<CountryEntity> countries) {
+    public void setCountries(List<Country> countries) {
         progressBar.setVisibility(View.GONE);
+        mSearchMenu.setVisible(true);
         mCountriesAdapter.setCountries(countries);
         mCountriesAdapter.notifyDataSetChanged();
     }
@@ -119,4 +92,36 @@ public class MainActivity extends BaseActivity<MainPresenter, MainMvpView>
         return new MainPresenterFactory();
     }
 
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        mSearchMenu = menu.findItem(R.id.search);
+        SearchView searchView = (SearchView) mSearchMenu.getActionView();
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                getPresenter().searchCountries(s);
+                mCountriesAdapter.setSearchString(s);
+                return true;
+            }
+        });
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.search) {
+            /* When a user clicks search button, tool bar will be collapsed. */
+            mAppBarLayout.setExpanded(false);
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 }

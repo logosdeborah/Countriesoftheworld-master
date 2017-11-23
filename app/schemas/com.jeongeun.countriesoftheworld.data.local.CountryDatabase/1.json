@@ -2,17 +2,23 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "e5ea6a2698d1667e8a845e1c7e2cb37c",
+    "identityHash": "b1f9dd51f6fdcc64f001fb36e55122c9",
     "entities": [
       {
         "tableName": "countries",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`name` TEXT NOT NULL, `capital` TEXT, `region` TEXT, `population` INTEGER, `flag` TEXT, `timezones` TEXT, PRIMARY KEY(`name`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`name` TEXT NOT NULL, `alpha2Code` TEXT, `capital` TEXT, `region` TEXT, `population` INTEGER, `flag` TEXT, `timezones` TEXT, `languages` TEXT, PRIMARY KEY(`name`))",
         "fields": [
           {
             "fieldPath": "name",
             "columnName": "name",
             "affinity": "TEXT",
             "notNull": true
+          },
+          {
+            "fieldPath": "alpha2Code",
+            "columnName": "alpha2Code",
+            "affinity": "TEXT",
+            "notNull": false
           },
           {
             "fieldPath": "capital",
@@ -43,6 +49,12 @@
             "columnName": "timezones",
             "affinity": "TEXT",
             "notNull": false
+          },
+          {
+            "fieldPath": "languages",
+            "columnName": "languages",
+            "affinity": "TEXT",
+            "notNull": false
           }
         ],
         "primaryKey": {
@@ -57,7 +69,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"e5ea6a2698d1667e8a845e1c7e2cb37c\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"b1f9dd51f6fdcc64f001fb36e55122c9\")"
     ]
   }
 }

@@ -30,6 +30,12 @@
             android:text="@string/capital"
             app:layout_constraintBottom_toBottomOf="@+id/capitalTextView" />
 
+       <TextView
+            android:id="@+id/language"
+            style="@style/CountryInfoTitleTextView"
+            android:text="@string/language"
+            app:layout_constraintBottom_toBottomOf="@+id/languageTextView" />
+
         <TextView
             android:id="@+id/region"
             style="@style/CountryInfoTitleTextView"
@@ -69,17 +75,22 @@
             app:layout_constraintTop_toTopOf="@id/horizGuide" />
 
         <TextView
-            android:id="@+id/regionTextView"
+            android:id="@+id/languageTextView"
             style="@style/CountryInfoContentTextView"
             app:layout_constraintTop_toBottomOf="@id/capitalTextView" />
 
         <TextView
+            android:id="@+id/regionTextView"
+            style="@style/CountryInfoContentTextView"
+            app:layout_constraintTop_toBottomOf="@id/languageTextView" />
+
+        <TextView
             android:id="@+id/timezonesTextView"
             style="@style/CountryInfoContentTextView"
-            android:maxLines="2"
+            android:maxLines="1"
             android:ellipsize="end"
             android:layout_width="0dp"
-            app:layout_constraintDimensionRatio="6:1"
+            app:layout_constraintDimensionRatio="9:1"
             app:layout_constraintTop_toBottomOf="@+id/regionTextView" />
 
         <TextView

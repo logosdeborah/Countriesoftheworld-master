@@ -1,9 +1,6 @@
 package com.jeongeun.countriesoftheworld.data.remote;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.jeongeun.countriesoftheworld.data.local.CountryEntity;
-import com.jeongeun.countriesoftheworld.util.MyGsonTypeAdapterFactory;
+import com.jeongeun.countriesoftheworld.data.model.Country;
 
 import java.util.List;
 
@@ -24,17 +21,14 @@ public interface CountriesService {
     String FIELDS = "fields";
 
     @GET("all")
-    Observable<List<CountryEntity>> getCountries(@Query(FIELDS) String fields);
+    Observable<List<Country>> getCountries(@Query(FIELDS) String fields);
 
     class Creator {
 
         public static CountriesService CreateCountriesService() {
-            Gson gson = new GsonBuilder()
-                    .registerTypeAdapterFactory(MyGsonTypeAdapterFactory.create())
-                    .create();
             Retrofit retrofit = new Retrofit.Builder()
                     .baseUrl(END_POINT)
-                    .addConverterFactory(GsonConverterFactory.create(gson))
+                    .addConverterFactory(GsonConverterFactory.create())
                     .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                     .build();
             return retrofit.create(CountriesService.class);

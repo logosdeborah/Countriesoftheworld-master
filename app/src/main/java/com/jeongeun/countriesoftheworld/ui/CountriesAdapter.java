@@ -6,7 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.jeongeun.countriesoftheworld.R;
-import com.jeongeun.countriesoftheworld.data.local.CountryEntity;
+import com.jeongeun.countriesoftheworld.data.model.Country;
 import com.jeongeun.countriesoftheworld.ui.base.ItemClickListener;
 import com.jeongeun.countriesoftheworld.util.ViewUtil;
 
@@ -19,16 +19,21 @@ import java.util.List;
 
 public class CountriesAdapter extends RecyclerView.Adapter<CountriesViewHolder> {
 
-    private List<CountryEntity> mCountries;
+    private List<Country> mCountries;
     private ItemClickListener mListener;
+    private String mSearchString;
 
     public CountriesAdapter(ItemClickListener listener) {
         mCountries = new ArrayList<>();
         mListener = listener;
     }
 
-    public void setCountries(List<CountryEntity> list) {
+    public void setCountries(List<Country> list) {
         mCountries = list;
+    }
+
+    public void setSearchString(String searchString) {
+        this.mSearchString = searchString;
     }
 
     @Override
@@ -40,8 +45,8 @@ public class CountriesAdapter extends RecyclerView.Adapter<CountriesViewHolder> 
 
     @Override
     public void onBindViewHolder(CountriesViewHolder holder, int position) {
-        CountryEntity country = mCountries.get(position);
-        holder.nameTextView.setText(country.name());
+        Country country = mCountries.get(position);
+        holder.nameTextView.setText(ViewUtil.getHighlightedText(country.name(), mSearchString));
         holder.capitalTextView.setText(ViewUtil.replaceIfEmpty(country.capital()));
     }
 
@@ -50,7 +55,7 @@ public class CountriesAdapter extends RecyclerView.Adapter<CountriesViewHolder> 
         return mCountries.size();
     }
 
-    public CountryEntity getCountry(int position) {
+    public Country getCountry(int position) {
         return mCountries.get(position);
     }
 

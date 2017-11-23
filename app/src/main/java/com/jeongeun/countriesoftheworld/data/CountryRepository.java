@@ -1,7 +1,7 @@
 package com.jeongeun.countriesoftheworld.data;
 
+import com.jeongeun.countriesoftheworld.data.model.Country;
 import com.jeongeun.countriesoftheworld.data.local.CountryDao;
-import com.jeongeun.countriesoftheworld.data.local.CountryEntity;
 import com.jeongeun.countriesoftheworld.data.remote.CountriesService;
 
 import java.util.List;
@@ -12,11 +12,12 @@ import timber.log.Timber;
 
 /**
  * Created by JeongEun on 2017-11-19.
+ * This is connection class between Presenter and DAO.
  */
 
 public class CountryRepository implements BaseRepository {
 
-    String CUSTOM_FIELDS = "name;capital;region;population;flag;timezones";
+    String CUSTOM_FIELDS = "name;alpha2Code;capital;region;population;flag;timezones;languages";
     private CountriesService countriesService;
     private CountryDao countryDao;
 
@@ -25,13 +26,17 @@ public class CountryRepository implements BaseRepository {
         this.countryDao = countryDao;
     }
 
-    public Observable<List<CountryEntity>> getCountries() {
+    /**
+     * Check local DB first and if there's not db exist, then download from API.
+     * @return
+     */
+    public Observable<List<Country>> getCountries() {
         return Observable.concatArray(
                 getCountriesFromDB(),
                 getCountriesFromApi());
     }
 
-    public Observable<List<CountryEntity>> getCountriesFromApi() {
+    public Observable<List<Country>> getCountriesFromApi() {
         return countriesService.getCountries(CUSTOM_FIELDS)
                 .doOnNext(it -> {
                     Timber.d("Dispatching %d countries from API...", it.size());
@@ -39,7 +44,7 @@ public class CountryRepository implements BaseRepository {
                 });
     }
 
-    public Observable<List<CountryEntity>> getCountriesFromDB() {
+    public Observable<List<Country>> getCountriesFromDB() {
         return countryDao.getAllCountries()
                 .filter(it -> !it.isEmpty())
                 .toObservable()
@@ -48,7 +53,7 @@ public class CountryRepository implements BaseRepository {
                 });
     }
 
-    public void storeCountriesInDb(List<CountryEntity> countries) {
+    public void storeCountriesInDb(List<Country> countries) {
         Observable.fromCallable(() -> countryDao.insertAll(countries))
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
@@ -57,7 +62,7 @@ public class CountryRepository implements BaseRepository {
                 });
     }
 
-    public Observable<List<CountryEntity>> searchCountriesByName(String name) {
+    public Observable<List<Country>> searchCountriesByName(String name) {
         return countryDao.searchForName(name)
                 .toObservable()
                 .doOnNext(it -> {

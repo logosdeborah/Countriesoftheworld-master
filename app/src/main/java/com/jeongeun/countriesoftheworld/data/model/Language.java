@@ -15,15 +15,12 @@ public class Language {
     @SerializedName("nativeName")
     public String nativeName;
 
-    @Nullable
     @SerializedName("iso639_2")
     public String iso6392;
 
-    @Nullable
     @SerializedName("name")
     public String name;
 
-    @Nullable
     @SerializedName("iso639_1")
     public String iso6391;
 
@@ -39,18 +36,16 @@ public class Language {
         return nativeName;
     }
 
-    @Nullable
     public String iso6392() {
         return iso6392;
     }
 
-    @Nullable
     public String name() {
         return name;
     }
 
-    @Nullable
     public String iso6391() {
         return iso6391;
     }
+
 }

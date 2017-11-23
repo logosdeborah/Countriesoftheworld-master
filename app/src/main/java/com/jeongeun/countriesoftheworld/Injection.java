@@ -12,6 +12,12 @@ import com.jeongeun.countriesoftheworld.data.remote.CountriesService;
 
 public class Injection {
 
+    /**
+     * To provide repository class instance.
+     * To create its instance, application context is required.
+     * @param context Application context
+     * @return CountryRepository instance
+     */
     public static CountryRepository provideCountryRepository(Context context) {
         CountryDatabase database = CountryDatabase.getInstance(context);
         return new CountryRepository(CountriesService.Creator.CreateCountriesService(),

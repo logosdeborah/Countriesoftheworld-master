@@ -1,7 +1,7 @@
 package com.jeongeun.countriesoftheworld.presenter;
 
 import com.jeongeun.countriesoftheworld.data.CountryRepository;
-import com.jeongeun.countriesoftheworld.data.local.CountryEntity;
+import com.jeongeun.countriesoftheworld.data.model.Country;
 import com.jeongeun.countriesoftheworld.presenter.base.BasePresenter;
 import com.jeongeun.countriesoftheworld.ui.MainMvpView;
 
@@ -11,17 +11,17 @@ import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
-import timber.log.Timber;
 
 public class MainPresenter extends BasePresenter<MainMvpView> {
+
     private CountryRepository mRepository;
     private Disposable mDisposable;
 
     public MainPresenter() {
     }
 
-    public void setRepository(CountryRepository repository) {
-        this.mRepository = repository;
+    public void setRepository(CountryRepository countryRepository) {
+        mRepository = countryRepository;
     }
 
     @Override
@@ -42,14 +42,14 @@ public class MainPresenter extends BasePresenter<MainMvpView> {
         mRepository.getCountries()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<List<CountryEntity>>() {
+                .subscribe(new Observer<List<Country>>() {
                     @Override
                     public void onSubscribe(Disposable d) {
                         mDisposable = d;
                     }
 
                     @Override
-                    public void onNext(List<CountryEntity> countries) {
+                    public void onNext(List<Country> countries) {
                         getMvpView().setCountries(countries);
                     }
 
@@ -68,16 +68,15 @@ public class MainPresenter extends BasePresenter<MainMvpView> {
         mRepository.searchCountriesByName(name)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<List<CountryEntity>>() {
+                .subscribe(new Observer<List<Country>>() {
                     @Override
                     public void onSubscribe(Disposable d) {
                         mDisposable = d;
                     }
 
                     @Override
-                    public void onNext(List<CountryEntity> countries) {
+                    public void onNext(List<Country> countries) {
                         getMvpView().setCountries(countries);
-                        Timber.d("loaded %d countries", countries.size());
                     }
 
                     @Override
@@ -90,7 +89,4 @@ public class MainPresenter extends BasePresenter<MainMvpView> {
                     }
                 });
     }
-
-
-
 }

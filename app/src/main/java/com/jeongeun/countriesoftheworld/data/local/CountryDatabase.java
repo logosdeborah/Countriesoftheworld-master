@@ -5,11 +5,13 @@ import android.arch.persistence.room.Room;
 import android.arch.persistence.room.RoomDatabase;
 import android.content.Context;
 
+import com.jeongeun.countriesoftheworld.data.model.Country;
+
 /**
  * Created by JeongEun on 2017-11-18.
  */
 
-@Database(entities = { CountryEntity.class }, version = 1)
+@Database(entities = { Country.class }, version = 1)
 public abstract class CountryDatabase extends RoomDatabase {
     private static final String DB_NAME = "countryDatabase.db";
     private static volatile CountryDatabase INSTANCE;

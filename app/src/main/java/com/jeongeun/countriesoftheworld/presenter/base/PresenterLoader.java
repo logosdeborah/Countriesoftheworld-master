@@ -18,6 +18,10 @@ public class PresenterLoader<P extends Presenter> extends Loader<P> {
         this.factory = factory;
     }
 
+    /**
+     * It is called by the Framework when onStart() is reached.
+     * Here it is checked whether we hold a Presenter instance or the Presenter needs to be created.
+     */
     @Override
     protected void onStartLoading() {
         super.onStartLoading();
@@ -30,6 +34,10 @@ public class PresenterLoader<P extends Presenter> extends Loader<P> {
         forceLoad();
     }
 
+    /**
+     * It is called when forceLoad() is invoked.
+     * Presenter factory will create it's instance and deliver the result.
+     */
     @Override
     protected void onForceLoad() {
         super.onForceLoad();

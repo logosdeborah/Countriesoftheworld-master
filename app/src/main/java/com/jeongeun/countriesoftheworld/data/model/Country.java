@@ -1,46 +1,77 @@
 package com.jeongeun.countriesoftheworld.data.model;
 
-import android.arch.persistence.room.ColumnInfo;
-import android.os.Parcelable;
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.PrimaryKey;
+import android.arch.persistence.room.TypeConverters;
+import android.support.annotation.NonNull;
 
-import com.google.auto.value.AutoValue;
-import com.google.gson.Gson;
-import com.google.gson.TypeAdapter;
+import com.jeongeun.countriesoftheworld.util.Converters;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by JeongEun on 2017-11-13.
+ * Created by JeongEun on 2017-11-18.
+ * Because Room library doesn't work well with AutoValue, it is necessary to create another class for country entity.
  */
 
-@AutoValue
-public abstract class Country implements Parcelable {
+@Entity(tableName = "countries")
+@TypeConverters({Converters.class})
+public class Country {
 
-    public abstract String name();
-    public abstract String capital();
-    public abstract String region();
-    public abstract Integer population();
-    public abstract String flag();
-    public abstract List<Language> languages();
-    public abstract List<String> timezones();
+    @NonNull
+    @PrimaryKey
+    private String name;
+    private String alpha2Code;
+    private String capital;
+    private String region;
+    private Integer population;
+    private String flag;
+    private List<String> timezones;
+    private List<Language> languages = new ArrayList<>();
 
-    public static TypeAdapter<Country> typeAdapter (Gson gson) {
-        return new AutoValue_Country.GsonTypeAdapter(gson);
+    public Country(@NonNull String name, String alpha2Code, String capital, String region,
+                   Integer population, String flag, List<String> timezones, List<Language> languages) {
+        this.name = name;
+        this.alpha2Code = alpha2Code;
+        this.capital = capital;
+        this.region = region;
+        this.population = population;
+        this.flag = flag;
+        this.timezones = timezones;
+        this.languages = languages;
     }
 
-    public static Builder builder() {
-        return new AutoValue_Country.Builder();
+    @NonNull
+    public String name() {
+        return name;
     }
 
-    @AutoValue.Builder
-    public abstract static class Builder {
-        public abstract Builder setName(String name);
-        public abstract Builder setCapital(String capital);
-        public abstract Builder setRegion(String region);
-        public abstract Builder setPopulation(Integer population);
-        public abstract Builder setFlag(String flag);
-        public abstract Builder setLanguages(List<Language> languages);
-        public abstract Builder setTimezones(List<String> timezones);
-        public abstract Country build();
+    public String alpha2Code() {
+        return alpha2Code;
+    }
+
+    public String capital() {
+        return capital;
+    }
+
+    public String region() {
+        return region;
+    }
+
+    public Integer population() {
+        return population;
+    }
+
+    public String flag() {
+        return flag;
+    }
+
+    public List<String> timezones() {
+        return timezones;
+    }
+
+    public List<Language> languages() {
+        return languages;
     }
 }
