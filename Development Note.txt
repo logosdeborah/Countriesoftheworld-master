@@ -1,5 +1,5 @@
 
-Concerns & Thoughts & TODO
+Concerns & Thoughts
 
 1. MVP pattern with adapter
 
@@ -18,24 +18,30 @@ Concerns & Thoughts & TODO
 
 	1) Presenter
 		It's important. Presenter should be survived when orientation changes.
-		There are few ways to do it. 
+		There are few ways to do it.
 		Simple way to do it is making the presenter static reference within activities.
 		But I chose to use Loader. I thought it's good to try out and to use Android built-in features to achieve the goal.
-	2) Country data (TODO)
-		When orientation changes, View asks the presenter to load country data from the web. 
-		Local DB should be implemented to avoid reloading data.
+	2) Country data
+		When orientation changes, View asks the presenter to load country data.
+		If there's DB exist, dispatch from DB otherwise download.
 
 4. ConstraintLayout (for better performance)
 
 	There are too many TextViews in Bottom-Sheet information panel. ConstraintLayout can be good for such situation.
-	ContraintLayout make a hierarchy flat so it make less measurement and better performance to display.
-	It's not something I haven't tried often but I thought worth try it. 
+	ConstraintLayout make a hierarchy flat so it make less measurement and better performance to display.
+	It's not something I haven't tried often but I thought worth try it.
 
-5. Search (TODO)
+5. Local DB
 
-	I planned to implement search feature. Since it involves creating local DB. It will take more time to it.
+	Room Persistent Library is the one I chose for storing DB.
+	Room support compile-time verification and it reduces a lot of boilerplate code.
+	But because it's still new, I needed to figure out some issues.
 
-6. Resolution (TODO)
+5. Search
 
-	1) Remove hard coded pixels.
-	2) Check layouts for multi-screen support
+    It's done.
+
+6. Resolution
+
+	1) Removed hard-coded pixels.
+	2) Checked layouts for multi-screen support

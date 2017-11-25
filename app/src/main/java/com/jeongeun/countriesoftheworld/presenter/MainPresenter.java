@@ -39,6 +39,7 @@ public class MainPresenter extends BasePresenter<MainMvpView> {
 
     public void loadCountries() {
 
+        checkViewAttached();
         mRepository.getCountries()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -65,6 +66,7 @@ public class MainPresenter extends BasePresenter<MainMvpView> {
     }
 
     public void searchCountries(String name) {
+        checkViewAttached();
         mRepository.searchCountriesByName(name)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

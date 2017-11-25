@@ -30,12 +30,14 @@ public class CountryRepository implements BaseRepository {
      * Check local DB first and if there's not db exist, then download from API.
      * @return
      */
+    @Override
     public Observable<List<Country>> getCountries() {
         return Observable.concatArray(
                 getCountriesFromDB(),
                 getCountriesFromApi());
     }
 
+    @Override
     public Observable<List<Country>> getCountriesFromApi() {
         return countriesService.getCountries(CUSTOM_FIELDS)
                 .doOnNext(it -> {
@@ -44,6 +46,7 @@ public class CountryRepository implements BaseRepository {
                 });
     }
 
+    @Override
     public Observable<List<Country>> getCountriesFromDB() {
         return countryDao.getAllCountries()
                 .filter(it -> !it.isEmpty())
@@ -53,6 +56,7 @@ public class CountryRepository implements BaseRepository {
                 });
     }
 
+    @Override
     public void storeCountriesInDb(List<Country> countries) {
         Observable.fromCallable(() -> countryDao.insertAll(countries))
                 .subscribeOn(Schedulers.io())
@@ -62,6 +66,7 @@ public class CountryRepository implements BaseRepository {
                 });
     }
 
+    @Override
     public Observable<List<Country>> searchCountriesByName(String name) {
         return countryDao.searchForName(name)
                 .toObservable()
