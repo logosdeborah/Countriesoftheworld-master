@@ -13,4 +13,5 @@ public interface MainMvpView extends MvpView {
 
     void setCountries(List<Country> countries);
     void showLoadingError(Throwable e);
+    void highlightSearchString(String searchString);
 }

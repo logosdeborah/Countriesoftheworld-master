@@ -14,19 +14,19 @@ import com.jeongeun.countriesoftheworld.data.model.Country;
 @Database(entities = { Country.class }, version = 1)
 public abstract class CountryDatabase extends RoomDatabase {
     private static final String DB_NAME = "countryDatabase.db";
-    private static volatile CountryDatabase INSTANCE;
+    private static volatile CountryDatabase sInstance;
 
     public static CountryDatabase getInstance(Context context) {
-        if (INSTANCE == null) {
+        if (sInstance == null) {
             synchronized (CountryDatabase.class) {
-                if (INSTANCE == null) {
-                    INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
+                if (sInstance == null) {
+                    sInstance = Room.databaseBuilder(context.getApplicationContext(),
                             CountryDatabase.class, DB_NAME)
                             .build();
                 }
             }
         }
-        return INSTANCE;
+        return sInstance;
     }
 
     public abstract CountryDao getCountryDao();

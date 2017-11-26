@@ -1,5 +1,8 @@
 package com.jeongeun.countriesoftheworld.presenter;
 
+import android.content.Context;
+
+import com.jeongeun.countriesoftheworld.Injection;
 import com.jeongeun.countriesoftheworld.presenter.base.Presenter;
 import com.jeongeun.countriesoftheworld.presenter.base.PresenterFactory;
 
@@ -8,8 +11,9 @@ import com.jeongeun.countriesoftheworld.presenter.base.PresenterFactory;
  */
 
 public class MainPresenterFactory implements PresenterFactory {
+
     @Override
-    public Presenter create() {
-        return new MainPresenter();
+    public Presenter create(Context context) {
+        return new MainPresenter(Injection.provideCountryRepository(context.getApplicationContext()));
     }
 }

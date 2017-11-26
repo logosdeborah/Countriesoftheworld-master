@@ -33,7 +33,7 @@ public class CountriesAdapter extends RecyclerView.Adapter<CountriesViewHolder> 
     }
 
     public void setSearchString(String searchString) {
-        this.mSearchString = searchString;
+        mSearchString = searchString;
     }
 
     @Override

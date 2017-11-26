@@ -11,7 +11,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
 
-import com.jeongeun.countriesoftheworld.Injection;
 import com.jeongeun.countriesoftheworld.R;
 import com.jeongeun.countriesoftheworld.data.model.Country;
 import com.jeongeun.countriesoftheworld.presenter.MainPresenter;
@@ -57,7 +56,6 @@ public class MainActivity extends BaseActivity<MainPresenter, MainMvpView>
     @Override
     protected void onStart() {
         super.onStart();
-        getPresenter().setRepository(Injection.provideCountryRepository(getApplicationContext()));
         getPresenter().loadCountries();
     }
 
@@ -68,13 +66,17 @@ public class MainActivity extends BaseActivity<MainPresenter, MainMvpView>
         mBottomSheetDialog = null;
     }
 
-
     @Override
     public void setCountries(List<Country> countries) {
         progressBar.setVisibility(View.GONE);
         mSearchMenu.setVisible(true);
         mCountriesAdapter.setCountries(countries);
         mCountriesAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void highlightSearchString(String searchString) {
+        mCountriesAdapter.setSearchString(searchString);
     }
 
     @Override
@@ -107,7 +109,6 @@ public class MainActivity extends BaseActivity<MainPresenter, MainMvpView>
             @Override
             public boolean onQueryTextChange(String s) {
                 getPresenter().searchCountries(s);
-                mCountriesAdapter.setSearchString(s);
                 return true;
             }
         });

@@ -17,13 +17,13 @@ import timber.log.Timber;
 
 public class CountryRepository implements BaseRepository {
 
-    String CUSTOM_FIELDS = "name;alpha2Code;capital;region;population;flag;timezones;languages";
-    private CountriesService countriesService;
-    private CountryDao countryDao;
+    private final String CUSTOM_FIELDS = "name;alpha2Code;capital;region;population;flag;timezones;languages";
+    private CountriesService mCountriesService;
+    private CountryDao mCountryDao;
 
     public CountryRepository(CountriesService countriesService, CountryDao countryDao) {
-        this.countriesService = countriesService;
-        this.countryDao = countryDao;
+        mCountriesService = countriesService;
+        mCountryDao = countryDao;
     }
 
     /**
@@ -39,7 +39,7 @@ public class CountryRepository implements BaseRepository {
 
     @Override
     public Observable<List<Country>> getCountriesFromApi() {
-        return countriesService.getCountries(CUSTOM_FIELDS)
+        return mCountriesService.getCountries(CUSTOM_FIELDS)
                 .doOnNext(it -> {
                     Timber.d("Dispatching %d countries from API...", it.size());
                     storeCountriesInDb(it);
@@ -48,7 +48,7 @@ public class CountryRepository implements BaseRepository {
 
     @Override
     public Observable<List<Country>> getCountriesFromDB() {
-        return countryDao.getAllCountries()
+        return mCountryDao.getAllCountries()
                 .filter(it -> !it.isEmpty())
                 .toObservable()
                 .doOnNext(it -> {
@@ -58,7 +58,7 @@ public class CountryRepository implements BaseRepository {
 
     @Override
     public void storeCountriesInDb(List<Country> countries) {
-        Observable.fromCallable(() -> countryDao.insertAll(countries))
+        Observable.fromCallable(() -> mCountryDao.insertAll(countries))
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
                 .subscribe(it -> {
@@ -68,7 +68,7 @@ public class CountryRepository implements BaseRepository {
 
     @Override
     public Observable<List<Country>> searchCountriesByName(String name) {
-        return countryDao.searchForName(name)
+        return mCountryDao.searchForName(name)
                 .toObservable()
                 .doOnNext(it -> {
                     Timber.d("Searched %d countries from DB...", it.size());

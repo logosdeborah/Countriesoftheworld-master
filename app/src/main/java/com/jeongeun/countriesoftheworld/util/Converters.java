@@ -20,6 +20,7 @@ public class Converters {
         Type listType = new TypeToken<List<String>>() {}.getType();
         return new Gson().fromJson(value, listType);
     }
+
     @TypeConverter
     public static String fromLists(List<String> list) {
         Gson gson = new Gson();
@@ -27,10 +28,11 @@ public class Converters {
     }
 
     @TypeConverter
-    public static List<Language> fromLanaugeString(String value) {
+    public static List<Language> fromLangaugeString(String value) {
         Type listType = new TypeToken<List<Language>>() {}.getType();
         return new Gson().fromJson(value, listType);
     }
+
     @TypeConverter
     public static String fromLanguageLists(List<Language> list) {
         Gson gson = new Gson();

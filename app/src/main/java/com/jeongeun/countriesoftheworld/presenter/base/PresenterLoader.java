@@ -10,12 +10,12 @@ import android.support.v4.content.Loader;
 
 public class PresenterLoader<P extends Presenter> extends Loader<P> {
 
-    private PresenterFactory<P> factory;
-    private P presenter;
+    private PresenterFactory<P> mFactory;
+    private P mPresenter;
 
     public PresenterLoader(Context context, PresenterFactory factory) {
         super(context);
-        this.factory = factory;
+        mFactory = factory;
     }
 
     /**
@@ -26,8 +26,8 @@ public class PresenterLoader<P extends Presenter> extends Loader<P> {
     protected void onStartLoading() {
         super.onStartLoading();
 
-        if (presenter != null) {
-            deliverResult(presenter);
+        if (mPresenter != null) {
+            deliverResult(mPresenter);
             return;
         }
 
@@ -42,8 +42,8 @@ public class PresenterLoader<P extends Presenter> extends Loader<P> {
     protected void onForceLoad() {
         super.onForceLoad();
 
-        presenter = factory.create();
-        deliverResult(presenter);
+        mPresenter = mFactory.create(getContext());
+        deliverResult(mPresenter);
     }
 
     /**
@@ -52,11 +52,11 @@ public class PresenterLoader<P extends Presenter> extends Loader<P> {
     @Override
     protected void onReset() {
         super.onReset();
-        presenter.onDestroyed();
-        presenter = null;
+        mPresenter.onDestroyed();
+        mPresenter = null;
     }
 
     public P getPresenter() {
-        return presenter;
+        return mPresenter;
     }
 }

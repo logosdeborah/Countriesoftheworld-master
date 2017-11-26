@@ -6,7 +6,6 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 
-import com.jeongeun.countriesoftheworld.Injection;
 import com.jeongeun.countriesoftheworld.presenter.base.Presenter;
 import com.jeongeun.countriesoftheworld.presenter.base.PresenterFactory;
 import com.jeongeun.countriesoftheworld.presenter.base.PresenterLoader;
@@ -17,9 +16,9 @@ import com.jeongeun.countriesoftheworld.presenter.base.PresenterLoader;
  * Loader stores presenter and will provide when it is needed.
  */
 
-public abstract class BaseActivity<P extends Presenter, V extends MvpView> extends AppCompatActivity{
+public abstract class BaseActivity<P extends Presenter, V extends MvpView> extends AppCompatActivity {
 
-    private P presenter;
+    private P mPresenter;
     private static final int LOADER_ID = 99;
 
     @Override
@@ -30,7 +29,7 @@ public abstract class BaseActivity<P extends Presenter, V extends MvpView> exten
         if (loader == null) {
             initLoader();
         } else {
-            presenter = ((PresenterLoader<P>)loader).getPresenter();
+            mPresenter = ((PresenterLoader<P>)loader).getPresenter();
         }
 
     }
@@ -47,12 +46,12 @@ public abstract class BaseActivity<P extends Presenter, V extends MvpView> exten
 
             @Override
             public void onLoadFinished(Loader<P> loader, P presenter) {
-                BaseActivity.this.presenter = presenter;
+                mPresenter = presenter;
             }
 
             @Override
             public void onLoaderReset(Loader<P> loader) {
-                BaseActivity.this.presenter = null;
+                mPresenter = null;
             }
         });
     }
@@ -60,25 +59,25 @@ public abstract class BaseActivity<P extends Presenter, V extends MvpView> exten
     @Override
     protected void onStart() {
         super.onStart();
-        presenter.attachView((V)this);
+        mPresenter.attachView((V)this);
     }
 
     @Override
     protected void onStop() {
-        presenter.detachView();
+        mPresenter.detachView();
         super.onStop();
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        presenter = null;
+        mPresenter = null;
     }
 
     protected abstract PresenterFactory<P> getPresenterFactory();
 
     protected P getPresenter() {
-        return presenter;
+        return mPresenter;
     }
 
 }
