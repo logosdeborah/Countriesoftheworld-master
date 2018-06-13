@@ -6,4 +6,5 @@
     <string name="region">Region</string>
     <string name="timezone">Time zone</string>
     <string name="population">Population</string>
+    <string name="new">new string</string>
 </resources>
